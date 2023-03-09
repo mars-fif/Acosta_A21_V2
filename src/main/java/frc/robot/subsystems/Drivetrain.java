@@ -80,6 +80,10 @@ public class Drivetrain extends SubsystemBase{
         m_drive.arcadeDrive(fwd, rot);
     }
 
+    public void tankDrive(double left, double right){
+        m_drive.tankDrive(left, right);
+    }
+
     public double getHeading(){
         return (Math.floorMod((long) m_imu.getAngle(), (long) 360));
     }

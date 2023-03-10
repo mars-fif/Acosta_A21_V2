@@ -10,6 +10,7 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.math.kinematics.DifferentialDriveWheelSpeeds;
 import edu.wpi.first.wpilibj.ADIS16470_IMU;
@@ -17,6 +18,8 @@ import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Drivetrain extends SubsystemBase{
+    private static Drivetrain drivetrain;
+
     private final CANSparkMax m_LFSparkMax = new CANSparkMax(DriveConstants.kLFSparkCANID, MotorType.kBrushless);
     private final CANSparkMax m_LRSparkMax = new CANSparkMax(DriveConstants.kLRSparkCANID, MotorType.kBrushless);
     private final CANSparkMax m_RFSparkMax = new CANSparkMax(DriveConstants.kRFSparkCANID, MotorType.kBrushless);
@@ -38,6 +41,12 @@ public class Drivetrain extends SubsystemBase{
     private final DifferentialDriveOdometry m_Odometry; 
 
     public Drivetrain(){
+        m_LFSparkMax.setSmartCurrentLimit(DriveConstants.kCurrentLimit);
+        m_LRSparkMax.setSmartCurrentLimit(DriveConstants.kCurrentLimit);
+        m_RFSparkMax.setSmartCurrentLimit(DriveConstants.kCurrentLimit);
+        m_RRSparkMax.setSmartCurrentLimit(DriveConstants.kCurrentLimit);
+
+        m_leftMotors.setInverted(DriveConstants.kLInvertMotor);
         m_rightMotors.setInverted(DriveConstants.kRInvertMotor);
 
         m_leftEncoder.setDistancePerPulse(DriveConstants.kEncoderDistancePerPulse);
@@ -55,6 +64,18 @@ public class Drivetrain extends SubsystemBase{
     @Override
     public void periodic(){
         m_Odometry.update(getRotation(), m_leftEncoder.getDistance(), m_rightEncoder.getDistance());
+
+        SmartDashboard.putNumber("IMU Angle", m_imu.getAngle());
+        SmartDashboard.putNumber("Heading", getHeading());
+        SmartDashboard.putNumber("Left Encoder", getLeftEncoder().getDistance());
+        SmartDashboard.putNumber("Right Encoder", getRighEncoder().getDistance());
+    }
+
+    public static Drivetrain getInstance(){
+        if(drivetrain == null){
+            drivetrain = new Drivetrain();
+        }
+        return drivetrain;
     }
 
     public void resetEncoders(){
@@ -122,5 +143,8 @@ public class Drivetrain extends SubsystemBase{
         return -m_imu.getRate();
     }
 
-
+    public void resetPose(Pose2d estimatedPostion, Rotation2d gyroAngle){
+        resetEncoders();
+        m_Odometry.resetPosition(getRotation(), m_leftEncoder.getDistance(), m_rightEncoder.getDistance(), estimatedPostion);
+    }
 }

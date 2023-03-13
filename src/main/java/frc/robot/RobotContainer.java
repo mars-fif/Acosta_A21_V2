@@ -4,35 +4,27 @@
 
 package frc.robot;
 
-// import edu.wpi.first.math.controller.PIDController;
-// import edu.wpi.first.math.controller.RamseteController;
-// import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
-// import edu.wpi.first.math.geometry.Translation2d;
-// import edu.wpi.first.math.trajectory.Trajectory;
-// import edu.wpi.first.math.trajectory.TrajectoryConfig;
-// import edu.wpi.first.math.trajectory.TrajectoryGenerator;
-// import edu.wpi.first.math.trajectory.constraint.DifferentialDriveVoltageConstraint;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
-// import edu.wpi.first.wpilibj2.command.RamseteCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Autonomous;
 import frc.robot.subsystems.Drivetrain;
-// import frc.robot.Constants.AutoConstants;
-// import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.OIConstants;
-import frc.robot.commands.Drive;
-
-// import java.util.List;
+import frc.robot.commands.ArmCommands.SetArmHome;
+import frc.robot.commands.ArmCommands.SetArmHorizontalFront;
+import frc.robot.commands.ArmCommands.SetArmVertical;
+import frc.robot.commands.DriveCommands.Drive;
 
 public class RobotContainer {
   // Subsystem Declaration
   private final Drivetrain drivetrain;
   private final Autonomous autonomous;
+  private final Arm arm;
 
   // Driver Joystick
   Joystick m_leftStick = new Joystick(OIConstants.kDriverLeftPort);
@@ -44,6 +36,7 @@ public class RobotContainer {
   public RobotContainer() {
     drivetrain = Drivetrain.getInstance();
     autonomous = Autonomous.getInstance();
+    arm = Arm.getInstance();
 
     configureBindings();
     drivetrain.setDefaultCommand(new Drive(m_leftStick, m_rightStick));
@@ -57,6 +50,14 @@ public class RobotContainer {
     new JoystickButton(m_rightStick, 1)
     .onTrue(new InstantCommand(()->drivetrain.setMaxOutput(0.5)))
     .onFalse(new InstantCommand(()->drivetrain.setMaxOutput(1.0)));
+  
+    new JoystickButton(m_opController, 1)
+    .whileTrue(new SetArmHorizontalFront())
+    .onFalse(new SetArmHome());
+
+    new JoystickButton(m_opController, 2)
+    .whileTrue(new SetArmVertical())
+    .onFalse(new SetArmHome());
   }
 
   public Command getAutonomousCommand() {

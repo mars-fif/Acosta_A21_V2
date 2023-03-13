@@ -41,6 +41,22 @@ public final class Constants {
   
     }
 
+    public static final class ArmConstants{
+        public static final int kArmCurrentLimit = 40;
+
+        public static final double kArmP = 0.05;
+        public static final double kArmI = 0.0;
+        public static final double kArmD = 0.0;
+
+        public static final int kArmFrontSparkMAXID = 10;
+        public static final int kArmRearSparkMAXID = 19;
+
+        public static final int kArmEncoderADIO = 4;
+        public static final int kArmEncoderBDIO = 5;
+        public static final boolean kArmEncoderReversed = true;
+        public static final double kEncoderCPRtoDeg = 81.093;
+    }
+
     public static final class OIConstants{
         public static final int kDriverLeftPort = 0;
         public static final int kDriverRightPort = 1;

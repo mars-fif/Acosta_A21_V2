@@ -2,8 +2,6 @@ package frc.robot.subsystems;
 
 import com.pathplanner.lib.PathPlanner;
 
-// import java.io.IOException;
-// import java.nio.file.Path;
 import java.util.Enumeration;
 import java.util.Hashtable;
 
@@ -12,17 +10,14 @@ import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.trajectory.Trajectory;
-// import edu.wpi.first.math.trajectory.TrajectoryUtil;
-// import edu.wpi.first.wpilibj.DriverStation;
-// import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.RamseteCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.commands.DriveOut;
 import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.DriveConstants;
+import frc.robot.commands.AutoCommands.DriveOut;
 
 public class Autonomous extends SubsystemBase{
     private final Drivetrain drivetrain;
@@ -31,7 +26,7 @@ public class Autonomous extends SubsystemBase{
     private SendableChooser<Command> autoRoutineChooser;
     private Hashtable<String,Command> autoRoutines;
 
-    private Trajectory exampleTrajectory, exampleTrajectory2;
+    private Trajectory exampleTrajectory, exampleTrajectory2, fowardOutLong;
 
     public Autonomous(){
         autoRoutines = new Hashtable<String,Command>();
@@ -65,7 +60,8 @@ public class Autonomous extends SubsystemBase{
 
     public void setupAutoRoutines(){
         autoRoutines.put("Forward Out", new DriveOut(exampleTrajectory.getInitialPose(), createCommandFromTrajectory(exampleTrajectory)));
-        autoRoutines.put("Forward Left", new DriveOut(exampleTrajectory.getInitialPose(), createCommandFromTrajectory(exampleTrajectory2)));
+        autoRoutines.put("Forward Left", new DriveOut(exampleTrajectory2.getInitialPose(), createCommandFromTrajectory(exampleTrajectory2)));
+        autoRoutines.put("Forward Out Long", new DriveOut(fowardOutLong.getInitialPose(), createCommandFromTrajectory(fowardOutLong)));
     }
 
     public Command returnAutonomousCommand(){
@@ -75,18 +71,8 @@ public class Autonomous extends SubsystemBase{
     private void defineAutoPaths(){
         exampleTrajectory = PathPlanner.loadPath("Forward Out", AutoConstants.kMaxSpeedMetersPerSecond,AutoConstants.kMaxAccelerationMetersPerSecondSquard);
         exampleTrajectory2= PathPlanner.loadPath("Forward Left", AutoConstants.kMaxSpeedMetersPerSecond,AutoConstants.kMaxAccelerationMetersPerSecondSquard);
+        fowardOutLong = PathPlanner.loadPath("Forward Out Long",  AutoConstants.kMaxSpeedMetersPerSecond,AutoConstants.kMaxAccelerationMetersPerSecondSquard);
     }
-
-    // private Trajectory loadPathWeaverJSON(String trajectoryJSON){
-    //     Trajectory trajectory = null;
-    //     try {
-    //         Path trajectoryPath = Filesystem.getDeployDirectory().toPath().resolve(trajectoryJSON);
-    //         trajectory = TrajectoryUtil.fromPathweaverJson(trajectoryPath);
-    //     }catch(IOException ex){
-    //         DriverStation.reportError("Unable to open trajectory: " + trajectoryJSON, ex.getStackTrace());
-    //     }
-    //     return trajectory;
-    // }
 
     public RamseteCommand createCommandFromTrajectory(Trajectory trajectory){
         var RamseteController = new RamseteController(AutoConstants.kRamseteB, AutoConstants.kRamseteZeta);

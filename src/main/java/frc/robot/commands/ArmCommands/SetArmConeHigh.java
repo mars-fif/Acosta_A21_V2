@@ -3,10 +3,10 @@ package frc.robot.commands.ArmCommands;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Arm;
 
-public class SetArmVertical extends CommandBase{
+public class SetArmConeHigh extends CommandBase{
     private Arm arm;
 
-    public SetArmVertical(){
+    public SetArmConeHigh(){
         arm = Arm.getInstance();
     }
 
@@ -17,7 +17,7 @@ public class SetArmVertical extends CommandBase{
 
     @Override
     public void execute(){
-        arm.setArmToPos(130);
+        arm.setArmToPos(190);
     }
 
     @Override
@@ -27,6 +27,6 @@ public class SetArmVertical extends CommandBase{
 
     @Override
     public boolean isFinished(){
-        return arm.getArmInPos();
+        return false;
     }
 }

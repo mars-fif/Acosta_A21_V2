@@ -14,17 +14,25 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Autonomous;
 import frc.robot.subsystems.Drivetrain;
+import frc.robot.subsystems.Wrist;
 import frc.robot.Constants.OIConstants;
 import frc.robot.commands.ArmCommands.SetArmHome;
 import frc.robot.commands.ArmCommands.SetArmHorizontalFront;
 import frc.robot.commands.ArmCommands.SetArmVertical;
+import frc.robot.commands.ArmCommands.SetArmConeHigh;
 import frc.robot.commands.DriveCommands.Drive;
+import frc.robot.commands.WristCommands.wristUp;
+import frc.robot.commands.WristCommands.wristDown;
+import frc.robot.commands.ClawCommands.closeClaw;
+import frc.robot.commands.ClawCommands.openClaw;
+
 
 public class RobotContainer {
   // Subsystem Declaration
   private final Drivetrain drivetrain;
   private final Autonomous autonomous;
   private final Arm arm;
+  private final Wrist sub_Wrist;
 
   // Driver Joystick
   Joystick m_leftStick = new Joystick(OIConstants.kDriverLeftPort);
@@ -37,6 +45,7 @@ public class RobotContainer {
     drivetrain = Drivetrain.getInstance();
     autonomous = Autonomous.getInstance();
     arm = Arm.getInstance();
+    sub_Wrist = new Wrist();
 
     configureBindings();
     drivetrain.setDefaultCommand(new Drive(m_leftStick, m_rightStick));
@@ -52,12 +61,25 @@ public class RobotContainer {
     .onFalse(new InstantCommand(()->drivetrain.setMaxOutput(1.0)));
   
     new JoystickButton(m_opController, 1)
-    .whileTrue(new SetArmHorizontalFront())
+    .whileTrue(new SetArmConeHigh())
     .onFalse(new SetArmHome());
 
     new JoystickButton(m_opController, 2)
     .whileTrue(new SetArmVertical())
     .onFalse(new SetArmHome());
+
+    new JoystickButton(m_opController, 3)
+    .whileTrue(new wristUp(sub_Wrist, m_opController));
+
+    new JoystickButton(m_opController, 4)
+    .whileTrue(new wristDown(sub_Wrist, m_opController));
+
+    new JoystickButton(m_opController, 5) // X = 3, B = 2
+    .whileTrue (new openClaw(sub_Wrist, m_opController));
+
+    new JoystickButton(m_opController, 6)
+    .whileTrue (new closeClaw(sub_Wrist, m_opController));
+
   }
 
   public Command getAutonomousCommand() {

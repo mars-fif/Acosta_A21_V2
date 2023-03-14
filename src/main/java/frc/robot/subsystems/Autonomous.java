@@ -18,6 +18,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.commands.AutoCommands.DriveOut;
+import frc.robot.commands.AutoCommands.ScoreHighCube;
 
 public class Autonomous extends SubsystemBase{
     private final Drivetrain drivetrain;
@@ -62,6 +63,7 @@ public class Autonomous extends SubsystemBase{
         autoRoutines.put("Forward Out", new DriveOut(exampleTrajectory.getInitialPose(), createCommandFromTrajectory(exampleTrajectory)));
         autoRoutines.put("Forward Left", new DriveOut(exampleTrajectory2.getInitialPose(), createCommandFromTrajectory(exampleTrajectory2)));
         autoRoutines.put("Forward Out Long", new DriveOut(fowardOutLong.getInitialPose(), createCommandFromTrajectory(fowardOutLong)));
+        autoRoutines.put("Score High Cube", new ScoreHighCube(exampleTrajectory.getInitialPose(), createCommandFromTrajectory(exampleTrajectory)));
     }
 
     public Command returnAutonomousCommand(){

@@ -18,7 +18,7 @@ public class T_SetArmConeMid extends CommandBase{
 
     @Override
     public void execute(){
-        arm.setArmToPos(220);
+        arm.setArmToPos(200);
     }
 
     @Override

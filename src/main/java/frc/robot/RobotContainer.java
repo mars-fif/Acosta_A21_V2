@@ -19,10 +19,12 @@ import frc.robot.subsystems.Pneumatics;
 import frc.robot.subsystems.Wrist;
 import frc.robot.Constants.OIConstants;
 import frc.robot.commands.ArmCommands.SetArmHome;
+import frc.robot.commands.ArmCommands.TeleopCommands.T_SetArmBackPick;
 import frc.robot.commands.ArmCommands.TeleopCommands.T_SetArmConeHigh;
 import frc.robot.commands.ArmCommands.TeleopCommands.T_SetArmConeMid;
 import frc.robot.commands.DriveCommands.Drive;
 import frc.robot.commands.WristCommands.wristUp;
+import frc.robot.commands.WristCommands.TeleopCommands.T_SetWristBackPick;
 import frc.robot.commands.WristCommands.TeleopCommands.T_SetWristHighCone;
 import frc.robot.commands.WristCommands.TeleopCommands.T_SetWristMidCone;
 import frc.robot.commands.WristCommands.SetWristPickUp_Front;
@@ -89,6 +91,9 @@ public class RobotContainer {
 
     new JoystickButton(m_opController, 6)
     .whileTrue (new closeClaw());
+
+    new JoystickButton(m_opController, 9)
+    .whileTrue(Commands.parallel(new T_SetArmBackPick(), new T_SetWristBackPick()));
 
     new JoystickButton(m_opController, 10)
     .whileTrue(Commands.parallel(new T_SetArmConeMid(), new T_SetWristMidCone()));

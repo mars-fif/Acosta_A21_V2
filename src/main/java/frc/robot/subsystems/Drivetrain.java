@@ -1,7 +1,7 @@
 package frc.robot.subsystems;
 
 import frc.robot.Constants.DriveConstants;
-
+//import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 
@@ -41,6 +41,7 @@ public class Drivetrain extends SubsystemBase{
     private final DifferentialDriveOdometry m_Odometry; 
 
     public Drivetrain(){
+        //CameraServer.startAutomaticCapture();
         m_LFSparkMax.setSmartCurrentLimit(DriveConstants.kCurrentLimit);
         m_LRSparkMax.setSmartCurrentLimit(DriveConstants.kCurrentLimit);
         m_RFSparkMax.setSmartCurrentLimit(DriveConstants.kCurrentLimit);
@@ -69,6 +70,10 @@ public class Drivetrain extends SubsystemBase{
         SmartDashboard.putNumber("Heading", getHeading());
         SmartDashboard.putNumber("Left Encoder", getLeftEncoder().getDistance());
         SmartDashboard.putNumber("Right Encoder", getRighEncoder().getDistance());
+        SmartDashboard.putNumber("Left Front Motor Temp", getMotorLFTemperature());
+        SmartDashboard.putNumber("Left Rear Motor Temp", getMotorLRTemperature());
+        SmartDashboard.putNumber("Right Front Motor Temp", getMotorRFTemperature());
+        SmartDashboard.putNumber("Right Rear Motor Temp", getMotorLRTemperature());
     }
 
     public static Drivetrain getInstance(){
@@ -142,6 +147,22 @@ public class Drivetrain extends SubsystemBase{
     public double getTurnRate(){
         return -m_imu.getRate();
     }
+
+    public double getMotorLFTemperature(){
+         return m_LFSparkMax.getMotorTemperature();
+    }
+
+    public double getMotorLRTemperature(){
+        return m_LRSparkMax.getMotorTemperature();
+    }
+
+    public double getMotorRFTemperature(){
+        return m_RFSparkMax.getMotorTemperature();
+    }
+
+    public double getMotorRRTemperature(){
+        return m_RRSparkMax.getMotorTemperature();
+    }   
 
     public void resetPose(Pose2d estimatedPostion, Rotation2d gyroAngle){
         resetEncoders();

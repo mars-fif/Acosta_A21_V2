@@ -57,6 +57,23 @@ public final class Constants {
         public static final double kEncoderCPRtoDeg = 81.093;
     }
 
+    public static final class WristConstants{
+        public static final int kWristCurrentLimit = 40;
+
+        public static final int kWristSparkMAXID = 11;
+
+        public static final double kWristP = 0.010;
+        public static final double kWristI = 0.0;
+        public static final double kWristD = 0.0;
+
+        public static final double kEncoderCPRtoDeg = 360.0/75.0;
+    }
+
+    public static final class PneumaticsConstants{
+        public static final double kMinPressure = 80.0;
+        public static final double kMaxPressure = 120.0;
+    }
+
 
     public static final class OIConstants{
         public static final int kDriverLeftPort = 0;

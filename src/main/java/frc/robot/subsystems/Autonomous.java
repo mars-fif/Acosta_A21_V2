@@ -18,7 +18,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.commands.AutoCommands.DriveOut;
-import frc.robot.commands.AutoCommands.ScoreHighCube;
+import frc.robot.commands.AutoCommands.TwoCone;
 
 public class Autonomous extends SubsystemBase{
     private final Drivetrain drivetrain;
@@ -27,7 +27,7 @@ public class Autonomous extends SubsystemBase{
     private SendableChooser<Command> autoRoutineChooser;
     private Hashtable<String,Command> autoRoutines;
 
-    private Trajectory exampleTrajectory, exampleTrajectory2, fowardOutLong;
+    private Trajectory Mobility, ReturnLeft;
 
     public Autonomous(){
         autoRoutines = new Hashtable<String,Command>();
@@ -60,10 +60,8 @@ public class Autonomous extends SubsystemBase{
     }
 
     public void setupAutoRoutines(){
-        autoRoutines.put("Forward Out", new DriveOut(exampleTrajectory.getInitialPose(), createCommandFromTrajectory(exampleTrajectory)));
-        autoRoutines.put("Forward Left", new DriveOut(exampleTrajectory2.getInitialPose(), createCommandFromTrajectory(exampleTrajectory2)));
-        autoRoutines.put("Forward Out Long", new DriveOut(fowardOutLong.getInitialPose(), createCommandFromTrajectory(fowardOutLong)));
-        autoRoutines.put("Score High Cube", new ScoreHighCube(exampleTrajectory.getInitialPose(), createCommandFromTrajectory(exampleTrajectory)));
+        autoRoutines.put("Mobility", new DriveOut(Mobility.getInitialPose(), createCommandFromTrajectory(Mobility)));
+        autoRoutines.put("TwoCone", new TwoCone(Mobility.getInitialPose(), createCommandFromTrajectory(Mobility), createCommandFromTrajectory(ReturnLeft)));
     }
 
     public Command returnAutonomousCommand(){
@@ -71,9 +69,8 @@ public class Autonomous extends SubsystemBase{
     }
 
     private void defineAutoPaths(){
-        exampleTrajectory = PathPlanner.loadPath("Forward Out", AutoConstants.kMaxSpeedMetersPerSecond,AutoConstants.kMaxAccelerationMetersPerSecondSquard);
-        exampleTrajectory2= PathPlanner.loadPath("Forward Left", AutoConstants.kMaxSpeedMetersPerSecond,AutoConstants.kMaxAccelerationMetersPerSecondSquard);
-        fowardOutLong = PathPlanner.loadPath("Forward Out Long",  AutoConstants.kMaxSpeedMetersPerSecond,AutoConstants.kMaxAccelerationMetersPerSecondSquard);
+        Mobility = PathPlanner.loadPath("LeftOut", AutoConstants.kMaxSpeedMetersPerSecond,AutoConstants.kMaxAccelerationMetersPerSecondSquard);
+        ReturnLeft = PathPlanner.loadPath("TwoCone", AutoConstants.kMaxSpeedMetersPerSecond,AutoConstants.kMaxAccelerationMetersPerSecondSquard);
     }
 
     public RamseteCommand createCommandFromTrajectory(Trajectory trajectory){

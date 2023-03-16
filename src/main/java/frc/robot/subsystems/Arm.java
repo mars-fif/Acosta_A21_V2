@@ -37,7 +37,10 @@ public class Arm extends SubsystemBase{
 
     @Override
     public void periodic(){
+        SmartDashboard.putNumber("Arm Set Point", getArmSetpoint());
         SmartDashboard.putNumber("Arm Angle", getEncoderDeg());
+        SmartDashboard.putNumber("Arm Front Motor Temp", getFrontMotorTemperature());
+        SmartDashboard.putNumber("Arm Rear Motor Temp", getRearMotorTemperature());
     }
     
     public static Arm getInstance(){
@@ -68,10 +71,22 @@ public class Arm extends SubsystemBase{
     }
 
     public void setArmToPos(double angle){
-        setArmSpeed(MathUtil.clamp(m_armPID.calculate(getEncoderDeg(),angle),-0.5,0.5));
+        setArmSpeed(MathUtil.clamp(m_armPID.calculate(getEncoderDeg(),angle),-0.3,0.3));
+    }
+    
+    public double getArmSetpoint(){
+        return m_armPID.getSetpoint();
     }
 
     public boolean getArmInPos(){
         return m_armPID.atSetpoint();
+    }
+
+    public double getFrontMotorTemperature(){
+        return m_armMotorFront.getMotorTemperature();
+    }
+
+    public double getRearMotorTemperature(){
+        return m_armMotorRear.getMotorTemperature();
     }
 }

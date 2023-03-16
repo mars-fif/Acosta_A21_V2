@@ -8,6 +8,7 @@ public class StopArm extends CommandBase{
 
     public StopArm (){
         arm = Arm.getInstance();
+        addRequirements(arm);
     }
 
     @Override

@@ -1,12 +1,12 @@
-package frc.robot.commands.ArmCommands;
+package frc.robot.commands.ArmCommands.AutoCommands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Arm;
 
-public class SetArmHome extends CommandBase{
+public class A_SetArmConeHigh extends CommandBase{
     private Arm arm;
 
-    public SetArmHome(){
+    public A_SetArmConeHigh(){
         arm = Arm.getInstance();
         addRequirements(arm);
     }
@@ -18,15 +18,19 @@ public class SetArmHome extends CommandBase{
 
     @Override
     public void execute(){
-        arm.setArmToPos(5);
+        arm.setArmToPos(190);
     }
 
     @Override
     public void end(boolean interrupted){
+        arm.setArmSpeed(0);
     }
 
     @Override
     public boolean isFinished(){
+        if (arm.getArmInPos()){
+            return true;
+        }
         return false;
     }
 }

@@ -1,13 +1,14 @@
-package frc.robot.commands.ArmCommands;
+package frc.robot.commands.WristCommands.TeleopCommands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.Arm;
+import frc.robot.subsystems.Wrist;
 
-public class SetArmHorizontalFront extends CommandBase{
-    private Arm arm;
+public class T_SetWristHighCone extends CommandBase{
+    private Wrist wrist;
 
-    public SetArmHorizontalFront(){
-        arm = Arm.getInstance();
+    public T_SetWristHighCone(){
+        wrist = Wrist.getInstance();
+        addRequirements(wrist);
     }
 
     @Override 
@@ -17,12 +18,12 @@ public class SetArmHorizontalFront extends CommandBase{
 
     @Override
     public void execute(){
-        arm.setArmToPos(40);
+        wrist.setToPos(155);
     }
 
     @Override
     public void end(boolean interrupted){
-        arm.setArmSpeed(0);
+
     }
 
     @Override

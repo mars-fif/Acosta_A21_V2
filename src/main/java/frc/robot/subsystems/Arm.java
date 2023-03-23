@@ -71,7 +71,7 @@ public class Arm extends SubsystemBase{
     }
 
     public void setArmToPos(double angle){
-        setArmSpeed(MathUtil.clamp(m_armPID.calculate(getEncoderDeg(),angle),-0.3,0.3));
+        setArmSpeed(MathUtil.clamp(m_armPID.calculate(getEncoderDeg(),angle),-0.5,0.5));
     }
     
     public double getArmSetpoint(){

@@ -69,8 +69,13 @@ public final class Constants {
         public static final double kEncoderCPRtoDeg = 360.0/75.0;
     }
 
+    public static final class ClawConstants{
+        public static final int kClawSparkMAXID = 12;
+        public static final int kClawCurrentLimit = 40;
+    }
+
     public static final class PneumaticsConstants{
-        public static final double kMinPressure = 80.0;
+        public static final double kMinPressure = 60.0;
         public static final double kMaxPressure = 120.0;
     }
 

@@ -18,7 +18,7 @@ public class T_SetWristBackPick extends CommandBase{
 
     @Override
     public void execute(){
-        wrist.setToPos(175);
+        wrist.setToPos(170);
     }
 
     @Override

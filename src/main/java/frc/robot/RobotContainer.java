@@ -14,6 +14,7 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Autonomous;
+import frc.robot.subsystems.Claw;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Pneumatics;
 import frc.robot.subsystems.Wrist;
@@ -22,6 +23,7 @@ import frc.robot.commands.ArmCommands.SetArmHome;
 import frc.robot.commands.ArmCommands.TeleopCommands.T_SetArmBackPick;
 import frc.robot.commands.ArmCommands.TeleopCommands.T_SetArmConeHigh;
 import frc.robot.commands.ArmCommands.TeleopCommands.T_SetArmConeMid;
+import frc.robot.commands.DriveCommands.Balance;
 import frc.robot.commands.DriveCommands.Drive;
 import frc.robot.commands.WristCommands.wristUp;
 import frc.robot.commands.WristCommands.TeleopCommands.T_SetWristBackPick;
@@ -30,8 +32,8 @@ import frc.robot.commands.WristCommands.TeleopCommands.T_SetWristMidCone;
 import frc.robot.commands.WristCommands.SetWristPickUp_Front;
 import frc.robot.commands.WristCommands.SetWristHome;
 import frc.robot.commands.WristCommands.wristDown;
-import frc.robot.commands.ClawCommands.closeClaw;
-import frc.robot.commands.ClawCommands.openClaw;
+//import frc.robot.commands.ClawCommands.closeClaw;
+//import frc.robot.commands.ClawCommands.openClaw;
 
 
 public class RobotContainer {
@@ -41,6 +43,7 @@ public class RobotContainer {
   private final Arm arm;
   private final Wrist wrist;
   private final Pneumatics pneumatics;
+  private final Claw claw;
 
   // Driver Joystick
   Joystick m_leftStick = new Joystick(OIConstants.kDriverLeftPort);
@@ -54,11 +57,13 @@ public class RobotContainer {
     autonomous = Autonomous.getInstance();
     arm = Arm.getInstance();
     wrist = Wrist.getInstance();
+    claw = Claw.getInstance();
     pneumatics = Pneumatics.getInstance();
 
     drivetrain.setDefaultCommand(new Drive(m_leftStick, m_rightStick));
     arm.setDefaultCommand(new SetArmHome());
     wrist.setDefaultCommand(new SetWristHome());
+    claw.register();
     pneumatics.register();
 
     configureBindings();
@@ -70,7 +75,11 @@ public class RobotContainer {
     .onTrue(new InstantCommand(()->drivetrain.setMaxOutput(0.5)))
     .onFalse(new InstantCommand(()->drivetrain.setMaxOutput(1.0)));
 
+    new JoystickButton(m_leftStick, 3)
+    .whileTrue(new Balance());
+    
     new JoystickButton(m_rightStick, 1)
+    //.whileTrue(new DriveBalance(m_leftStick, m_rightStick));
     .onTrue(new InstantCommand(()->drivetrain.setMaxOutput(0.5)))
     .onFalse(new InstantCommand(()->drivetrain.setMaxOutput(1.0)));
   
@@ -86,11 +95,19 @@ public class RobotContainer {
     new JoystickButton(m_opController, 4)
     .whileTrue(new wristDown());
 
-    new JoystickButton(m_opController, 5) // X = 3, B = 2
-    .whileTrue (new openClaw());
+    // new JoystickButton(m_opController, 5) // X = 3, B = 2
+    // .whileTrue (new openClaw());
+
+    // new JoystickButton(m_opController, 6)
+    // .whileTrue (new closeClaw());
+
+    new JoystickButton(m_opController, 5)
+    .onTrue(new InstantCommand(()->claw.setSpeed(1)))
+    .onFalse(new InstantCommand(()->claw.setSpeed(0)));
 
     new JoystickButton(m_opController, 6)
-    .whileTrue (new closeClaw());
+    .onTrue(new InstantCommand(()->claw.setSpeed(-1)))
+    .onFalse(new InstantCommand(()->claw.setSpeed(0)));
 
     new JoystickButton(m_opController, 9)
     .whileTrue(Commands.parallel(new T_SetArmBackPick(), new T_SetWristBackPick()));

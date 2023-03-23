@@ -1,20 +1,18 @@
 package frc.robot.commands.DriveCommands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-
 import frc.robot.subsystems.Drivetrain;
 import edu.wpi.first.wpilibj.Joystick;
 
-public class Drive extends CommandBase {
+public class DriveBalance extends CommandBase{
     private Drivetrain drivetrain;
     Joystick leftJoystick, rightJoystick;
 
-    public Drive(Joystick leftStick, Joystick rightStick){
+    public DriveBalance(Joystick leftStick, Joystick rightStick){
         drivetrain = Drivetrain.getInstance();
-        
         leftJoystick = leftStick;
         rightJoystick = rightStick;
-        addRequirements(drivetrain);
+        
     }
 
     @Override
@@ -24,7 +22,7 @@ public class Drive extends CommandBase {
 
     @Override
     public void execute(){
-        drivetrain.tankDrive(-leftJoystick.getY(), -rightJoystick.getY());
+        drivetrain.setDriveWBalance(-leftJoystick.getY(),-rightJoystick.getY());
     }
 
     @Override
@@ -32,3 +30,4 @@ public class Drive extends CommandBase {
         return false;
     }
 }
+

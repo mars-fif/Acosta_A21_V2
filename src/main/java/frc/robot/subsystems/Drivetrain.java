@@ -1,6 +1,8 @@
 package frc.robot.subsystems;
 
 import frc.robot.Constants.DriveConstants;
+import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.math.controller.PIDController;
 //import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -40,7 +42,10 @@ public class Drivetrain extends SubsystemBase{
 
     private final DifferentialDriveOdometry m_Odometry; 
 
+    private final PIDController m_DrivePID;
+
     public Drivetrain(){
+        m_DrivePID = new PIDController(0.1, 0, 0);
         //CameraServer.startAutomaticCapture();
         m_LFSparkMax.setSmartCurrentLimit(DriveConstants.kCurrentLimit);
         m_LRSparkMax.setSmartCurrentLimit(DriveConstants.kCurrentLimit);
@@ -68,6 +73,7 @@ public class Drivetrain extends SubsystemBase{
 
         SmartDashboard.putNumber("IMU Angle", m_imu.getAngle());
         SmartDashboard.putNumber("Heading", getHeading());
+        SmartDashboard.putNumber("Pitch", getPitch());
         SmartDashboard.putNumber("Left Encoder", getLeftEncoder().getDistance());
         SmartDashboard.putNumber("Right Encoder", getRighEncoder().getDistance());
         SmartDashboard.putNumber("Left Front Motor Temp", getMotorLFTemperature());
@@ -144,6 +150,10 @@ public class Drivetrain extends SubsystemBase{
         m_imu.reset();
     }
 
+    public double getPitch(){
+        return m_imu.getYComplementaryAngle();
+    }
+
     public double getTurnRate(){
         return -m_imu.getRate();
     }
@@ -167,5 +177,14 @@ public class Drivetrain extends SubsystemBase{
     public void resetPose(Pose2d estimatedPostion, Rotation2d gyroAngle){
         resetEncoders();
         m_Odometry.resetPosition(getRotation(), m_leftEncoder.getDistance(), m_rightEncoder.getDistance(), estimatedPostion);
+    }
+
+    public void setDriveBalance(){
+        arcadeDrive(MathUtil.clamp(m_DrivePID.calculate(getPitch(),-2.4), -0.7, 0.7), 0);
+        //arcadeDrive(0.3, 0);
+    }
+
+    public void setDriveWBalance(double left, double right){
+        tankDrive(left+m_DrivePID.calculate(getPitch(),-2.4), right+m_DrivePID.calculate(getPitch(),-2.4));
     }
 }

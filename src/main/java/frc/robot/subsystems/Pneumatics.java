@@ -14,6 +14,7 @@ public class Pneumatics extends SubsystemBase{
     public Pneumatics(){
         m_pneumaticsHub = new Compressor(PneumaticsModuleType.REVPH);
         m_pneumaticsHub.enableAnalog(PneumaticsConstants.kMinPressure, PneumaticsConstants.kMaxPressure);
+        m_pneumaticsHub.disable();
     }
 
     @Override

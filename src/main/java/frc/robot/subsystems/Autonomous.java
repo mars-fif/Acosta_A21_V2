@@ -18,6 +18,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.commands.AutoCommands.DriveOut;
+import frc.robot.commands.AutoCommands.ScoreHighCube;
 import frc.robot.commands.AutoCommands.TwoCone;
 
 public class Autonomous extends SubsystemBase{
@@ -61,6 +62,7 @@ public class Autonomous extends SubsystemBase{
 
     public void setupAutoRoutines(){
         autoRoutines.put("Mobility", new DriveOut(Mobility.getInitialPose(), createCommandFromTrajectory(Mobility)));
+        autoRoutines.put("ScoreHighCone", new ScoreHighCube(Mobility.getInitialPose(), createCommandFromTrajectory(Mobility)));
         autoRoutines.put("TwoCone", new TwoCone(Mobility.getInitialPose(), createCommandFromTrajectory(Mobility), createCommandFromTrajectory(ReturnLeft)));
     }
 

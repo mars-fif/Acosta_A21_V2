@@ -18,7 +18,7 @@ public class A_SetWristHighCone extends CommandBase{
 
     @Override
     public void execute(){
-        wrist.setToPos(155);
+        wrist.setToPos(135);
     }
 
     @Override

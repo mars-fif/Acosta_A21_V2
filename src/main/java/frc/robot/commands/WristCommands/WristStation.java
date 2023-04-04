@@ -1,12 +1,12 @@
-package frc.robot.commands.WristCommands.AutoCommands;
+package frc.robot.commands.WristCommands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Wrist;
 
-public class A_SetWristHighCone extends CommandBase{
+public class WristStation extends CommandBase{
     private Wrist wrist;
 
-    public A_SetWristHighCone(){
+    public WristStation(){
         wrist = Wrist.getInstance();
         addRequirements(wrist);
     }
@@ -18,20 +18,19 @@ public class A_SetWristHighCone extends CommandBase{
 
     @Override
     public void execute(){
-        //wrist.setToPos(135); <--Old command 
-        wrist.setToPos(125);
+        wrist.setToPos(65);
     }
 
     @Override
     public void end(boolean interrupted){
-
+        //wrist.setwristSpeed(0);
     }
 
     @Override
     public boolean isFinished(){
-        if (wrist.getWristInPos()){
-             return true;
-        }
+        // if (wrist.getwristInPos()){
+        //     return true;
+        // }
         return false;
     }
 }

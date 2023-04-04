@@ -3,7 +3,7 @@ package frc.robot.subsystems;
 import frc.robot.Constants.DriveConstants;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
-//import edu.wpi.first.cameraserver.CameraServer;
+import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 
@@ -45,8 +45,8 @@ public class Drivetrain extends SubsystemBase{
     private final PIDController m_DrivePID;
 
     public Drivetrain(){
-        m_DrivePID = new PIDController(0.1, 0, 0);
-        //CameraServer.startAutomaticCapture();
+        m_DrivePID = new PIDController(0.025, 0, 0);
+        CameraServer.startAutomaticCapture();
         m_LFSparkMax.setSmartCurrentLimit(DriveConstants.kCurrentLimit);
         m_LRSparkMax.setSmartCurrentLimit(DriveConstants.kCurrentLimit);
         m_RFSparkMax.setSmartCurrentLimit(DriveConstants.kCurrentLimit);
@@ -109,7 +109,7 @@ public class Drivetrain extends SubsystemBase{
     }
 
     public void arcadeDrive(double fwd, double rot){
-        m_drive.arcadeDrive(fwd, rot);
+        m_drive.arcadeDrive(-fwd, rot);
     }
 
     public void tankDrive(double left, double right){
@@ -180,7 +180,7 @@ public class Drivetrain extends SubsystemBase{
     }
 
     public void setDriveBalance(){
-        arcadeDrive(MathUtil.clamp(m_DrivePID.calculate(getPitch(),-2.4), -0.7, 0.7), 0);
+        arcadeDrive(MathUtil.clamp(m_DrivePID.calculate(getPitch(),-2.4), -0.4, 0.4), 0);
         //arcadeDrive(0.3, 0);
     }
 

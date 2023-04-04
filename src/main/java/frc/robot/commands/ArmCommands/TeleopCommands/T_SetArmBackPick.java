@@ -18,7 +18,8 @@ public class T_SetArmBackPick extends CommandBase{
 
     @Override
     public void execute(){
-        arm.setArmToPos(245);
+        arm.setSetpoint(245);
+        arm.setArmToPos();
     }
 
     @Override

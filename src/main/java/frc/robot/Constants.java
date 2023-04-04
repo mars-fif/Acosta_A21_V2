@@ -71,7 +71,7 @@ public final class Constants {
 
     public static final class ClawConstants{
         public static final int kClawSparkMAXID = 12;
-        public static final int kClawCurrentLimit = 40;
+        public static final int kClawCurrentLimit = 20;
     }
 
     public static final class PneumaticsConstants{

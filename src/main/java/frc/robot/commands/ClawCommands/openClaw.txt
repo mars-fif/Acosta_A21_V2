@@ -1,24 +1,26 @@
-package frc.robot.commands.WristCommands.TeleopCommands;
+package frc.robot.commands.ClawCommands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+
 import frc.robot.subsystems.Wrist;
 
-public class T_SetWristMidCone extends CommandBase{
-    private Wrist wrist;
 
-    public T_SetWristMidCone(){
+public class openClaw extends CommandBase{
+    
+    private final Wrist wrist;
+    
+    public openClaw(){
         wrist = Wrist.getInstance();
-        addRequirements(wrist);
     }
 
-    @Override 
+    @Override
     public void initialize(){
-        
+    
     }
 
     @Override
     public void execute(){
-        wrist.setToPos(175);
+        wrist.noidnoidON();
     }
 
     @Override
@@ -28,6 +30,6 @@ public class T_SetWristMidCone extends CommandBase{
 
     @Override
     public boolean isFinished(){
-        return false;
+        return true;
     }
 }

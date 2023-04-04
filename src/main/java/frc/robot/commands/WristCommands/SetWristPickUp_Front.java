@@ -18,7 +18,7 @@ public class SetWristPickUp_Front extends CommandBase{
 
     @Override
     public void execute(){
-        wrist.setToPos(140);
+        wrist.setToPos(135);
     }
 
     @Override

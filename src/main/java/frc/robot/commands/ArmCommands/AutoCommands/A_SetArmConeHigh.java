@@ -18,7 +18,9 @@ public class A_SetArmConeHigh extends CommandBase{
 
     @Override
     public void execute(){
-        arm.setArmToPos(195);
+        //arm.setArmToPos(195); <--- cmd for the old intake
+        arm.setSetpoint(165);
+        arm.setArmToPos();
     }
 
     @Override

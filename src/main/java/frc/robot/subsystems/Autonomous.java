@@ -20,6 +20,8 @@ import frc.robot.Constants.DriveConstants;
 import frc.robot.commands.AutoCommands.DriveOut;
 import frc.robot.commands.AutoCommands.ScoreHighCube;
 import frc.robot.commands.AutoCommands.TwoCone;
+import frc.robot.commands.AutoCommands.ChargeStation;
+import frc.robot.commands.AutoCommands.ConeChargeStation;
 
 public class Autonomous extends SubsystemBase{
     private final Drivetrain drivetrain;
@@ -28,7 +30,7 @@ public class Autonomous extends SubsystemBase{
     private SendableChooser<Command> autoRoutineChooser;
     private Hashtable<String,Command> autoRoutines;
 
-    private Trajectory Mobility, ReturnLeft;
+    private Trajectory Mobility, ReturnLeft, ChargeStation;
 
     public Autonomous(){
         autoRoutines = new Hashtable<String,Command>();
@@ -63,7 +65,9 @@ public class Autonomous extends SubsystemBase{
     public void setupAutoRoutines(){
         autoRoutines.put("Mobility", new DriveOut(Mobility.getInitialPose(), createCommandFromTrajectory(Mobility)));
         autoRoutines.put("ScoreHighCone", new ScoreHighCube(Mobility.getInitialPose(), createCommandFromTrajectory(Mobility)));
-        autoRoutines.put("TwoCone", new TwoCone(Mobility.getInitialPose(), createCommandFromTrajectory(Mobility), createCommandFromTrajectory(ReturnLeft)));
+        autoRoutines.put("ChargeStation", new ChargeStation(ChargeStation.getInitialPose(), createCommandFromTrajectory(ChargeStation)));
+        autoRoutines.put("Cone Charge Station", new ConeChargeStation(ChargeStation.getInitialPose(), createCommandFromTrajectory(ChargeStation)));
+        //autoRoutines.put("TwoCone", new TwoCone(Mobility.getInitialPose(), createCommandFromTrajectory(Mobility), createCommandFromTrajectory(ReturnLeft)));
     }
 
     public Command returnAutonomousCommand(){
@@ -71,8 +75,9 @@ public class Autonomous extends SubsystemBase{
     }
 
     private void defineAutoPaths(){
-        Mobility = PathPlanner.loadPath("LeftOut", AutoConstants.kMaxSpeedMetersPerSecond,AutoConstants.kMaxAccelerationMetersPerSecondSquard);
+        Mobility = PathPlanner.loadPath("Forward Out", AutoConstants.kMaxSpeedMetersPerSecond,AutoConstants.kMaxAccelerationMetersPerSecondSquard);
         ReturnLeft = PathPlanner.loadPath("TwoCone", AutoConstants.kMaxSpeedMetersPerSecond,AutoConstants.kMaxAccelerationMetersPerSecondSquard);
+        ChargeStation = PathPlanner.loadPath("Charge Station", 1.5*AutoConstants.kMaxSpeedMetersPerSecond,1.5*AutoConstants.kMaxAccelerationMetersPerSecondSquard);
     }
 
     public RamseteCommand createCommandFromTrajectory(Trajectory trajectory){

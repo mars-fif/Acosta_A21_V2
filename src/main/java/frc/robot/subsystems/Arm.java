@@ -19,6 +19,8 @@ public class Arm extends SubsystemBase{
     private final MotorControllerGroup m_armMotors;
     private final Encoder m_armEncoder;
     private final PIDController m_armPID;
+    private double setPointAngle = 10.0;
+    private double trim =0.0;
 
 
     public Arm(){
@@ -37,6 +39,7 @@ public class Arm extends SubsystemBase{
 
     @Override
     public void periodic(){
+        SmartDashboard.putNumber("Arm Trim", trim);
         SmartDashboard.putNumber("Arm Set Point", getArmSetpoint());
         SmartDashboard.putNumber("Arm Angle", getEncoderDeg());
         SmartDashboard.putNumber("Arm Front Motor Temp", getFrontMotorTemperature());
@@ -70,8 +73,24 @@ public class Arm extends SubsystemBase{
         return m_armEncoder.getRaw()/ArmConstants.kEncoderCPRtoDeg;
     }
 
-    public void setArmToPos(double angle){
-        setArmSpeed(MathUtil.clamp(m_armPID.calculate(getEncoderDeg(),angle),-0.5,0.5));
+    public void setSetpoint(double angle){
+        setPointAngle = angle;
+    }
+
+    public void setArmToPos(){
+        setArmSpeed(MathUtil.clamp(m_armPID.calculate(getEncoderDeg(),setPointAngle),-0.5,0.5));
+    }
+
+    public void setArmHome(){
+        setArmSpeed(MathUtil.clamp(m_armPID.calculate(getEncoderDeg(),setPointAngle+trim),-0.5,0.5));
+    }
+
+    public void increaseArmSetpoint(){
+        trim = trim+1;
+    }
+
+    public void decreaseArmSetpoint(){
+        trim = trim-1;
     }
     
     public double getArmSetpoint(){

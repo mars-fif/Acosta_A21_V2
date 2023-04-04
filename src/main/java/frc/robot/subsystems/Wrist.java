@@ -119,7 +119,7 @@ public class Wrist extends SubsystemBase{
     // }
 
     public void setToPos(double angle){
-        setSpeed(MathUtil.clamp(m_wristPID.calculate(getEncoderDeg(), angle),-0.5,0.5));
+        setSpeed(MathUtil.clamp(m_wristPID.calculate(getEncoderDeg(), angle),-0.3,0.5));
     }
 
     public boolean getWristInPos(){

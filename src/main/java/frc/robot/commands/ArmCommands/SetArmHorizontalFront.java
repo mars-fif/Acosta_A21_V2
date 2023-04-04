@@ -1,14 +1,13 @@
-package frc.robot.commands.ArmCommands.TeleopCommands;
+package frc.robot.commands.ArmCommands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Arm;
 
-public class T_SetArmConeMid extends CommandBase{
+public class SetArmHorizontalFront extends CommandBase{
     private Arm arm;
 
-    public T_SetArmConeMid(){
+    public SetArmHorizontalFront(){
         arm = Arm.getInstance();
-        addRequirements(arm);
     }
 
     @Override 
@@ -18,13 +17,13 @@ public class T_SetArmConeMid extends CommandBase{
 
     @Override
     public void execute(){
-        arm.setSetpoint(200);
+        arm.setSetpoint(65);
         arm.setArmToPos();
     }
 
     @Override
     public void end(boolean interrupted){
-
+        arm.setArmSpeed(0);
     }
 
     @Override

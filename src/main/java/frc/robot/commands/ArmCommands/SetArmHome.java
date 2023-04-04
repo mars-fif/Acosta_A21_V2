@@ -13,12 +13,12 @@ public class SetArmHome extends CommandBase{
 
     @Override 
     public void initialize(){
-        
     }
 
     @Override
     public void execute(){
-        arm.setArmToPos(10);
+        arm.setSetpoint(10);
+        arm.setArmHome();
     }
 
     @Override
